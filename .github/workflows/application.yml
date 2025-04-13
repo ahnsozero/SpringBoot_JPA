@@ -1,0 +1,20 @@
+name: Build with Secret
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set DB password in application.yml
+        run: |
+          sed -i "s/DB_PASSWORD_PLACEHOLDER/${DB_PASSWORD}/g" src/main/resources/application.yml
